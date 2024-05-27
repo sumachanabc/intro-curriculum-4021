@@ -162,9 +162,10 @@ app.get("/:scheduleId", ensureAuthenticated(), async (c) => {
         <p style="white-space: pre;">${schedule.memo}</p>
         <p>作成者: ${schedule.user.username}</p>
         ${isMine(user.id, schedule)
-          ? html`<a href="/schedules/${schedule.scheduleId}/edit"
-              >この予定を編集する</a
-            >`
+          ? html`
+              <a href="/schedules/${schedule.scheduleId}/edit">
+                この予定を編集する
+              </a>`
           : ""}
         <h3>出欠表</h3>
         <table>
