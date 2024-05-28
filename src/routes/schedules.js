@@ -120,14 +120,14 @@ app.get("/:scheduleId", ensureAuthenticated(), async (c) => {
 
   // 閲覧ユーザと出欠に紐づくユーザからユーザ Map を作る
   const userMap = new Map(); // key: userId, value: User
-  userMap.set(parseInt(user.id), {
+  userMap.set(parseInt(user.id, 10), {
     isSelf: true,
-    userId: parseInt(user.id),
+    userId: parseInt(user.id, 10),
     username: user.username,
   });
   availabilities.forEach((a) => {
     userMap.set(a.user.userId, {
-      isSelf: parseInt(user.id) === a.user.userId, // 閲覧ユーザ自身であるかを示す真偽値
+      isSelf: parseInt(user.id, 10) === a.user.userId, // 閲覧ユーザ自身であるかを示す真偽値
       userId: a.user.userId,
       username: a.user.username,
     });
@@ -162,9 +162,10 @@ app.get("/:scheduleId", ensureAuthenticated(), async (c) => {
         <p style="white-space: pre;">${schedule.memo}</p>
         <p>作成者: ${schedule.user.username}</p>
         ${isMine(user.id, schedule)
-          ? html`<a href="/schedules/${schedule.scheduleId}/edit"
-              >この予定を編集する</a
-            >`
+          ? html`
+              <a href="/schedules/${schedule.scheduleId}/edit">
+                この予定を編集する
+              </a>`
           : ""}
         <h3>出欠表</h3>
         <table>
@@ -185,7 +186,7 @@ app.get("/:scheduleId", ensureAuthenticated(), async (c) => {
                   return html`
                     <td>
                       ${user.isSelf
-                        ? html` <button
+                        ? html`<button
                             data-schedule-id="${schedule.scheduleId}"
                             data-user-id="${user.userId}"
                             data-candidate-id="${candidate.candidateId}"
